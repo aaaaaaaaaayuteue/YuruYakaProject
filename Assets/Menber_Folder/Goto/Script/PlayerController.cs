@@ -15,6 +15,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Transform firstPersonCamera;
     [Header("俯瞰カメラのGameObject（2D時にONにする）")]
     [SerializeField] GameObject topDownCameraObject;
+    [Header("2D時の懐中電灯みたいなライトのGameObject（2D時にONにする）")]
+    [SerializeField] GameObject topDownLight;
 
     private CharacterController controller;  // CharacterControllerの参照
     private float xRotation = 0f;            // 上下の回転角度を累積する変数
@@ -110,6 +112,19 @@ public class PlayerController : MonoBehaviour
         // ワールド座標基準で左右・上下に移動（プレイヤーの向きに関係なく動く）
         Vector3 move = new Vector3(x, 0f, z);
 
+        // 移動入力がある時だけプレイヤーを進行方向に向かせる
+        if (move != Vector3.zero)
+        {
+            // 移動方向に向くY軸回転を計算する
+            float targetAngle = Mathf.Atan2(move.x, move.z) * Mathf.Rad2Deg;
+
+            // プレイヤーのY軸回転だけ変更する
+            transform.rotation = Quaternion.Euler(0f, targetAngle, 0f);
+        }
+
+        // 毎フレームカメラのワールド回転を真下に固定する（プレイヤーの回転の影響を打ち消す）
+        topDownCameraObject.transform.rotation = Quaternion.Euler(90f, 0f, 0f);
+
         // 現在の速度（ダッシュ中かどうかで変わる）をかけてキャラクターを動かす
         controller.Move(move * GetCurrentSpeed() * Time.deltaTime);
     }
@@ -123,6 +138,9 @@ public class PlayerController : MonoBehaviour
         // 3Dカメラ・2Dカメラを切り替える
         firstPersonCamera.gameObject.SetActive(!topDown);
         topDownCameraObject.SetActive(topDown);
+
+        // 2Dライトを視点モードに合わせてON/OFFする
+        topDownLight.SetActive(topDown);
 
         if (topDown)
         {
