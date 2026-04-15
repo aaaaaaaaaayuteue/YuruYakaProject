@@ -20,6 +20,8 @@ public class EnemyController : MonoBehaviour
     [SerializeField] Transform playerTransform;
     [Header("プレイヤー発見時の方向転換にかかる時間（秒）")]
     [SerializeField] float lookAtPlayerDuration = 0.3f;
+    [Header("プレイヤーの方向を向いてから追跡開始するまでの待機時間（秒）")]
+    [SerializeField] float chaseStartDelay = 0.1f;
 
     private NavMeshAgent agent;          // NavMeshAgentの参照
     private int currentPatrolIndex = 0;  // 現在の巡回ポイントのインデックス
@@ -68,11 +70,8 @@ public class EnemyController : MonoBehaviour
         // プレイヤーが検知範囲内に入ったら追跡開始
         if (distanceToPlayer <= detectionRange)
         {
-            isChasing = true;
-
-            // プレイヤー発見時にlookAtPlayerDuration秒かけてプレイヤーの方向を向く
+            // コルーチン内でisChasing = trueにするのでここではしない
             StartCoroutine(LookAtPlayerRoutine());
-
             return;
         }
 
@@ -87,6 +86,9 @@ public class EnemyController : MonoBehaviour
     private IEnumerator LookAtPlayerRoutine()
     {
         float elapsed = 0f;
+
+        // 回転中は敵の移動を止める
+        agent.isStopped = true;
 
         // 回転開始時の向きを保存しておく
         Quaternion startRotation = transform.rotation;
@@ -109,6 +111,13 @@ public class EnemyController : MonoBehaviour
         // 回転を最終値に確定する
         Vector3 finalLookTarget = new Vector3(playerTransform.position.x, transform.position.y, playerTransform.position.z);
         transform.rotation = Quaternion.LookRotation(finalLookTarget - transform.position);
+
+        // chaseStartDelay秒待ってから追跡開始する
+        yield return new WaitForSeconds(chaseStartDelay);
+
+        // 追跡開始して敵の移動を再開する
+        isChasing = true;
+        agent.isStopped = false;
     }
 
     // 次の巡回ポイントに移動する処理
