@@ -163,4 +163,15 @@ public class PlayerController : MonoBehaviour
             Cursor.lockState = CursorLockMode.Locked;
         }
     }
+
+    // プレイヤーのColliderが敵に触れたら自分を非アクティブにする
+    private void OnTriggerEnter(Collider other)
+    {
+        // タグがEnemyのオブジェクトに触れたら
+        if (other.CompareTag("Enemy"))
+        {
+            // 自分を非アクティブにする（仮）
+            gameObject.SetActive(false);
+        }
+    }
 }
