@@ -22,6 +22,8 @@ public class EnemyController : MonoBehaviour
     [SerializeField] float lookAtPlayerDuration = 0.3f;
     [Header("プレイヤーの方向を向いてから追跡開始するまでの待機時間（秒）")]
     [SerializeField] float chaseStartDelay = 0.1f;
+    [Header("プレイヤーを見失ってから巡回に戻るまでの時間（秒）")]
+    [SerializeField] float losePlayerWaitTime = 3f;
 
     private NavMeshAgent agent;          // NavMeshAgentの参照
     private int currentPatrolIndex = 0;  // 現在の巡回ポイントのインデックス
@@ -189,5 +191,29 @@ public class EnemyController : MonoBehaviour
         // 追跡をやめる距離を赤色で表示
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, loseRange);
+    }
+
+    // 外部からプレイヤーを見失わせる関数（LockerControllerから呼ぶ）
+    public void LosePlayer()
+    {
+        if (isChasing)
+        {
+            isChasing = false;
+            StartCoroutine(LosePlayerRoutine());
+        }
+    }
+
+    // プレイヤーを見失ってからlosePlayerWaitTime秒後に巡回に戻るコルーチン
+    private IEnumerator LosePlayerRoutine()
+    {
+        // 敵をその場で止める
+        agent.isStopped = true;
+
+        // losePlayerWaitTime秒待つ
+        yield return new WaitForSeconds(losePlayerWaitTime);
+
+        // 移動を再開して巡回に戻る
+        agent.isStopped = false;
+        MoveToNearestPatrolPoint();
     }
 }
