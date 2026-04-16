@@ -836,6 +836,7 @@ GameObject:
   - component: {fileID: 112215745}
   - component: {fileID: 112215750}
   - component: {fileID: 112215751}
+  - component: {fileID: 112215752}
   m_Layer: 7
   m_Name: Enemy
   m_TagString: Enemy
@@ -1015,7 +1016,30 @@ MonoBehaviour:
   playerTransform: {fileID: 1244263203}
   lookAtPlayerDuration: 0.3
   chaseStartDelay: 0.1
-  losePlayerWaitTime: 3
+  losePlayerWaitTime: 0.5
+--- !u!136 &112215752
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 112215744}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &218835875
 GameObject:
   m_ObjectHideFlags: 0
@@ -1155,14 +1179,14 @@ RectTransform:
   m_GameObject: {fileID: 248366609}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 34.7, y: 34.7, z: 34.7}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1569747613}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -910, y: -490}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &248366611
@@ -1178,7 +1202,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -5185,6 +5209,7 @@ GameObject:
   - component: {fileID: 1512392043}
   - component: {fileID: 1512392042}
   - component: {fileID: 1512392041}
+  - component: {fileID: 1512392045}
   m_Layer: 0
   m_Name: Locker
   m_TagString: Untagged
@@ -5290,6 +5315,27 @@ Transform:
   - {fileID: 528098780}
   m_Father: {fileID: 1571740008}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1512392045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1512392040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9402cf20d04b0764d9b44d2d0778c9eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::LockerController
+  playerTransform: {fileID: 1244263203}
+  playerController: {fileID: 1244263207}
+  interactRange: 2.91
+  fieldOfViewAngle: 60
+  facingAngleThreshold: 60
+  exitDistance: 1
+  promptText: {fileID: 1713432796}
+  blackPanel: {fileID: 248366611}
+  firstPersonCamera: {fileID: 1197122162}
 --- !u!1 &1523893480
 GameObject:
   m_ObjectHideFlags: 0

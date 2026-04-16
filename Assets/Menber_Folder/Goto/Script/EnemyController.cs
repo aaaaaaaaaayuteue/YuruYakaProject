@@ -25,15 +25,19 @@ public class EnemyController : MonoBehaviour
     [Header("プレイヤーを見失ってから巡回に戻るまでの時間（秒）")]
     [SerializeField] float losePlayerWaitTime = 3f;
 
-    private NavMeshAgent agent;          // NavMeshAgentの参照
-    private int currentPatrolIndex = 0;  // 現在の巡回ポイントのインデックス
-    private bool isChasing = false;      // 追跡中かどうかのフラグ
-    private Transform[] patrolPoints;    // 巡回ポイントの配列（Startで自動生成）
+    private NavMeshAgent agent;              // NavMeshAgentの参照
+    private int currentPatrolIndex = 0;      // 現在の巡回ポイントのインデックス
+    private bool isChasing = false;          // 追跡中かどうかのフラグ
+    private Transform[] patrolPoints;        // 巡回ポイントの配列（Startで自動生成）
+    private PlayerController playerController; // PlayerControllerの参照
 
     private void Start()
     {
         // NavMeshAgentコンポーネントを取得
         agent = GetComponent<NavMeshAgent>();
+
+        // PlayerControllerをキャッシュしておく
+        playerController = playerTransform.GetComponent<PlayerController>();
 
         // 親オブジェクトの子オブジェクトを上から順に取得して配列に格納する
         patrolPoints = new Transform[patrolPointsParent.childCount];
@@ -69,8 +73,8 @@ public class EnemyController : MonoBehaviour
         // 巡回速度を設定
         agent.speed = patrolSpeed;
 
-        // プレイヤーが検知範囲内に入ったら追跡開始
-        if (distanceToPlayer <= detectionRange)
+        // プレイヤーが隠れてない場合だけ検知する
+        if (distanceToPlayer <= detectionRange && !playerController.IsHiding)
         {
             // コルーチン内でisChasing = trueにするのでここではしない
             StartCoroutine(LookAtPlayerRoutine());
@@ -181,18 +185,6 @@ public class EnemyController : MonoBehaviour
         }
     }
 
-    // Sceneビューで検知範囲と追跡をやめる距離を可視化する
-    private void OnDrawGizmosSelected()
-    {
-        // 検知範囲を黄色で表示
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, detectionRange);
-
-        // 追跡をやめる距離を赤色で表示
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, loseRange);
-    }
-
     // 外部からプレイヤーを見失わせる関数（LockerControllerから呼ぶ）
     public void LosePlayer()
     {
@@ -215,5 +207,17 @@ public class EnemyController : MonoBehaviour
         // 移動を再開して巡回に戻る
         agent.isStopped = false;
         MoveToNearestPatrolPoint();
+    }
+
+    // Sceneビューで検知範囲と追跡をやめる距離を可視化する
+    private void OnDrawGizmosSelected()
+    {
+        // 検知範囲を黄色で表示
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, detectionRange);
+
+        // 追跡をやめる距離を赤色で表示
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, loseRange);
     }
 }

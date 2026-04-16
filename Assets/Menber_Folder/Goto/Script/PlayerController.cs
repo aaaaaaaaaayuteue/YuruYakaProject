@@ -21,9 +21,13 @@ public class PlayerController : MonoBehaviour
     private CharacterController controller;  // CharacterControllerの参照
     private float xRotation = 0f;            // 上下の回転角度を累積する変数
     private bool isTopDown = false;          // 現在の視点モード（falseで3D、trueで2D）
+    private bool isHiding = false;           // 隠れてるかどうかのフラグ
 
     // IsTopDownを外部から参照できるようにプロパティを追加
     public bool IsTopDown => isTopDown;
+
+    // IsHidingを外部から参照できるようにプロパティを追加
+    public bool IsHiding => isHiding;
 
     private void Start()
     {
@@ -170,6 +174,8 @@ public class PlayerController : MonoBehaviour
     // 外部からhiding状態を設定する関数（LockerControllerから呼ぶ）
     public void SetHiding(bool hiding)
     {
+        isHiding = hiding;
+
         // 隠れてる間はプレイヤーの移動とColliderを無効化する
         enabled = !hiding;
         GetComponent<Collider>().enabled = !hiding;
