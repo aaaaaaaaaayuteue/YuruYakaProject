@@ -4792,11 +4792,11 @@ MonoBehaviour:
   moveSpeed: 3
   dashMultiplier: 1.5
   mouseSensitivity: 800
+  topDownMouseSensitivity: 800
   verticalLookLimit: 90
   firstPersonCamera: {fileID: 1197122162}
   topDownCameraObject: {fileID: 714860990}
   topDownLight: {fileID: 842597397}
-  resetCameraOnReturn: 0
 --- !u!143 &1244263208
 CharacterController:
   m_ObjectHideFlags: 0
@@ -7551,7 +7551,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!108 &1963875729
 Light:
   m_ObjectHideFlags: 0

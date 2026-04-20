@@ -9,6 +9,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float dashMultiplier = 1.3f;
     [Header("マウス感度（3D時）")]
     [SerializeField] float mouseSensitivity = 100f;
+    [Header("マウス感度（2D時）")]
+    [SerializeField] float topDownMouseSensitivity = 100f;
     [Header("上下の視点制限角度（90で真上・真下まで）")]
     [SerializeField] float verticalLookLimit = 90f;
     [Header("カメラのTransform（3D一人称視点）")]
@@ -17,13 +19,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] GameObject topDownCameraObject;
     [Header("2D時の懐中電灯みたいなライトのGameObject（2D時にONにする）")]
     [SerializeField] GameObject topDownLight;
-    [Header("2Dから3Dに戻る時カメラの向きをプレイヤーに合わせるか（OFFで北向き）")]
-    [SerializeField] bool resetCameraOnReturn = false;
 
     private CharacterController controller;  // CharacterControllerの参照
     private float xRotation = 0f;            // 上下の回転角度を累積する変数
     private bool isTopDown = false;          // 現在の視点モード（falseで3D、trueで2D）
     private bool isHiding = false;           // 隠れてるかどうかのフラグ
+    private float topDownCameraY = 0f;       // 2Dカメラのy軸回転角度を累積する変数
 
     // IsTopDownを外部から参照できるようにプロパティを追加
     public bool IsTopDown => isTopDown;
@@ -45,25 +46,8 @@ public class PlayerController : MonoBehaviour
         // スペースキーが押されたら視点を切り替える
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (isTopDown)
-            {
-                // 2Dから3Dに戻る時
-                if (resetCameraOnReturn)
-                {
-                    // ONの時：2Dでプレイヤーが向いてた方向に合わせる
-                    SetTopDownMode(false, transform.eulerAngles.y);
-                }
-                else
-                {
-                    // OFFの時：北向き（0度）で戻る
-                    SetTopDownMode(false, 0f);
-                }
-            }
-            else
-            {
-                // 3Dから2Dに切り替える
-                SetTopDownMode(true);
-            }
+            // 現在の視点モードを反転して切り替える
+            SetTopDownMode(!isTopDown);
         }
 
         // マウスホイールボタンを押したらカメラの上下角度をリセットする
@@ -142,11 +126,32 @@ public class PlayerController : MonoBehaviour
         float x = Input.GetAxis("Horizontal"); // 左右
         float z = Input.GetAxis("Vertical");   // 上下
 
-        // プレイヤーのローカル方向を基準に移動方向を計算する
-        Vector3 move = transform.right * x + transform.forward * z;
+        // マウスの左右入力でカメラのY軸回転を更新する（2D時の感度を使う）
+        float mouseX = Input.GetAxis("Mouse X") * topDownMouseSensitivity * Time.deltaTime;
+        topDownCameraY += mouseX;
 
-        // カメラ回転を真下に固定する
-        topDownCameraObject.transform.rotation = Quaternion.Euler(90f, 0f, 0f);
+        // カメラの実際のup・right方向をXZ平面に投影して移動方向を計算する
+        Vector3 camUp = topDownCameraObject.transform.up;
+        Vector3 camRight = topDownCameraObject.transform.right;
+
+        // Y成分を消してXZ平面上の方向にする
+        Vector3 moveForward = new Vector3(camUp.x, 0f, camUp.z).normalized;
+        Vector3 moveRight = new Vector3(camRight.x, 0f, camRight.z).normalized;
+
+        Vector3 move = moveForward * z + moveRight * x;
+
+        // 移動入力がある時だけプレイヤーを進行方向に向かせる
+        if (move != Vector3.zero)
+        {
+            // 移動方向に向くY軸回転を計算する
+            float targetAngle = Mathf.Atan2(move.x, move.z) * Mathf.Rad2Deg;
+
+            // プレイヤーのY軸回転だけ変更する
+            transform.rotation = Quaternion.Euler(0f, targetAngle, 0f);
+        }
+
+        // プレイヤー回転の後にカメラ回転を上書きする（順番が重要）
+        topDownCameraObject.transform.rotation = Quaternion.Euler(90f, topDownCameraY, 0f);
 
         // 現在の速度（ダッシュ中かどうかで変わる）をかけてキャラクターを動かす
         controller.Move(move * GetCurrentSpeed() * Time.deltaTime);
@@ -167,6 +172,9 @@ public class PlayerController : MonoBehaviour
 
         if (topDown)
         {
+            // 2Dモードに切り替わる時にカメラのY軸回転をリセットする
+            topDownCameraY = 0f;
+
             // カメラのワールド回転を強制的に真下に固定する
             topDownCameraObject.transform.rotation = Quaternion.Euler(90f, 0f, 0f);
 
@@ -178,7 +186,7 @@ public class PlayerController : MonoBehaviour
             // 3Dに戻る時、指定された方向にプレイヤーを向かせる
             transform.rotation = Quaternion.Euler(0f, yRotation, 0f);
 
-            // 上下の視点をリセットする
+            // 上下の視点もリセットする
             xRotation = 0f;
             firstPersonCamera.localRotation = Quaternion.Euler(0f, 0f, 0f);
 
