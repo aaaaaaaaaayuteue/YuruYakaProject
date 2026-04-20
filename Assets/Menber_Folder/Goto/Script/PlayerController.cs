@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
@@ -19,12 +20,15 @@ public class PlayerController : MonoBehaviour
     [SerializeField] GameObject topDownCameraObject;
     [Header("2D時の懐中電灯みたいなライトのGameObject（2D時にONにする）")]
     [SerializeField] GameObject topDownLight;
+    [Header("2Dから3Dに戻る時カメラの向きをプレイヤーに合わせるか（OFFで2Dカメラの向き）")]
+    [SerializeField] bool resetCameraOnReturn = false;
 
     private CharacterController controller;  // CharacterControllerの参照
     private float xRotation = 0f;            // 上下の回転角度を累積する変数
     private bool isTopDown = false;          // 現在の視点モード（falseで3D、trueで2D）
     private bool isHiding = false;           // 隠れてるかどうかのフラグ
     private float topDownCameraY = 0f;       // 2Dカメラのy軸回転角度を累積する変数
+    private bool isGameOver = false;         // ゲームオーバーかどうかのフラグ
 
     // IsTopDownを外部から参照できるようにプロパティを追加
     public bool IsTopDown => isTopDown;
@@ -43,11 +47,39 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        // ゲームオーバー時にスペースキーでリトライ
+        if (isGameOver)
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                // 現在のシーンを再読み込みする
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            }
+            return;
+        }
+
         // スペースキーが押されたら視点を切り替える
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            // 現在の視点モードを反転して切り替える
-            SetTopDownMode(!isTopDown);
+            if (isTopDown)
+            {
+                // 2Dから3Dに戻る時
+                if (resetCameraOnReturn)
+                {
+                    // ONの時：プレイヤーの向きを引き継ぐ
+                    SetTopDownMode(false, transform.eulerAngles.y);
+                }
+                else
+                {
+                    // OFFの時：2Dカメラのローカルの向きに合わせる
+                    SetTopDownMode(false, topDownCameraY);
+                }
+            }
+            else
+            {
+                // 3Dから2Dに切り替える
+                SetTopDownMode(true);
+            }
         }
 
         // マウスホイールボタンを押したらカメラの上下角度をリセットする
@@ -150,7 +182,7 @@ public class PlayerController : MonoBehaviour
             transform.rotation = Quaternion.Euler(0f, targetAngle, 0f);
         }
 
-        // プレイヤー回転の後にカメラ回転を上書きする（順番が重要）
+        // プレイヤー回転の後にカメラ回転を上書きする（順番が重要・ちらつき防止）
         topDownCameraObject.transform.rotation = Quaternion.Euler(90f, topDownCameraY, 0f);
 
         // 現在の速度（ダッシュ中かどうかで変わる）をかけてキャラクターを動かす
@@ -172,11 +204,11 @@ public class PlayerController : MonoBehaviour
 
         if (topDown)
         {
-            // 2Dモードに切り替わる時にカメラのY軸回転をリセットする
-            topDownCameraY = 0f;
+            // 2Dモードに切り替わる時にカメラのY軸回転をプレイヤーの向きに合わせる
+            topDownCameraY = transform.eulerAngles.y;
 
-            // カメラのワールド回転を強制的に真下に固定する
-            topDownCameraObject.transform.rotation = Quaternion.Euler(90f, 0f, 0f);
+            // プレイヤーの向きに合わせてカメラのワールド回転を真下に固定する
+            topDownCameraObject.transform.rotation = Quaternion.Euler(90f, topDownCameraY, 0f);
 
             // 2Dモード時もカーソルを非表示・固定する
             Cursor.lockState = CursorLockMode.Locked;
@@ -186,7 +218,7 @@ public class PlayerController : MonoBehaviour
             // 3Dに戻る時、指定された方向にプレイヤーを向かせる
             transform.rotation = Quaternion.Euler(0f, yRotation, 0f);
 
-            // 上下の視点もリセットする
+            // カメラの上下角度を水平にリセットする
             xRotation = 0f;
             firstPersonCamera.localRotation = Quaternion.Euler(0f, 0f, 0f);
 
@@ -211,6 +243,9 @@ public class PlayerController : MonoBehaviour
         // タグがEnemyのオブジェクトに触れたら
         if (other.CompareTag("Enemy"))
         {
+            // ゲームオーバーにする
+            isGameOver = true;
+
             // 自分を非アクティブにする（仮）
             gameObject.SetActive(false);
         }
