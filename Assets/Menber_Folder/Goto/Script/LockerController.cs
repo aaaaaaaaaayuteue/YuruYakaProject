@@ -1,51 +1,51 @@
-using UnityEngine;
+ï»¿using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
 public class LockerController : MonoBehaviour
 {
-    [Header("ƒvƒŒƒCƒ„[‚ÌTransform")]
+    [Header("ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®Transform")]
     [SerializeField] Transform playerTransform;
-    [Header("PlayerController‚ÌQÆ")]
+    [Header("PlayerControllerã®å‚ç…§")]
     [SerializeField] PlayerController playerController;
-    [Header("ƒƒbƒJ[‚É“ü‚ê‚é”ÍˆÍ")]
+    [Header("ãƒ­ãƒƒã‚«ãƒ¼ã«å…¥ã‚Œã‚‹ç¯„å›²")]
     [SerializeField] float interactRange = 2f;
-    [Header("3D‚Ì‹ŠEŠp“xi‚±‚ÌŠp“x“à‚ÉƒƒbƒJ[‚ª‚ ‚ê‚Î•\¦j")]
+    [Header("3Dæ™‚ã®è¦–ç•Œè§’åº¦ï¼ˆã“ã®è§’åº¦å†…ã«ãƒ­ãƒƒã‚«ãƒ¼ãŒã‚ã‚Œã°è¡¨ç¤ºï¼‰")]
     [SerializeField] float fieldOfViewAngle = 60f;
-    [Header("2D‚ÉƒvƒŒƒCƒ„[‚ªƒƒbƒJ[‚Ì•ûŒü‚ğŒü‚¢‚Ä‚é‚Æ”»’è‚·‚éŠp“x")]
+    [Header("2Dæ™‚ã«ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒãƒ­ãƒƒã‚«ãƒ¼ã®æ–¹å‘ã‚’å‘ã„ã¦ã‚‹ã¨åˆ¤å®šã™ã‚‹è§’åº¦")]
     [SerializeField] float facingAngleThreshold = 60f;
-    [Header("ƒƒbƒJ[‚©‚ço‚½‚Ì³–Ê‚©‚ç‚Ì‹——£")]
+    [Header("ãƒ­ãƒƒã‚«ãƒ¼ã‹ã‚‰å‡ºãŸæ™‚ã®æ­£é¢ã‹ã‚‰ã®è·é›¢")]
     [SerializeField] float exitDistance = 1.5f;
-    [Header("E : ‰B‚ê‚é / E : o‚é‚ÌƒeƒLƒXƒg")]
+    [Header("E : éš ã‚Œã‚‹ / E : å‡ºã‚‹ã®ãƒ†ã‚­ã‚¹ãƒˆ")]
     [SerializeField] TMP_Text promptText;
-    [Header("‰æ–Ê‚ğˆÃ‚­‚·‚é•‚¢ƒpƒlƒ‹")]
+    [Header("ç”»é¢ã‚’æš—ãã™ã‚‹é»’ã„ãƒ‘ãƒãƒ«")]
     [SerializeField] Image blackPanel;
-    [Header("3D‚Ég‚¤ƒJƒƒ‰‚ÌTransform")]
+    [Header("3Dæ™‚ã«ä½¿ã†ã‚«ãƒ¡ãƒ©ã®Transform")]
     [SerializeField] Transform firstPersonCamera;
 
-    private bool isPlayerInside = false;         // ƒvƒŒƒCƒ„[‚ªƒƒbƒJ[“à‚É‚¢‚é‚©‚Ç‚¤‚©
-    private EnemyController[] enemyControllers;  // ƒV[ƒ““à‚Ì‘S“G‚ÌQÆ
+    private bool isPlayerInside = false;         // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãŒãƒ­ãƒƒã‚«ãƒ¼å†…ã«ã„ã‚‹ã‹ã©ã†ã‹
+    private EnemyController[] enemyControllers;  // ã‚·ãƒ¼ãƒ³å†…ã®å…¨æ•µã®å‚ç…§
 
     private void Start()
     {
-        // ƒV[ƒ““à‚Ì‘SEnemyController‚ğ©“®‚Åæ“¾‚·‚é
+        // ã‚·ãƒ¼ãƒ³å†…ã®å…¨EnemyControllerã‚’è‡ªå‹•ã§å–å¾—ã™ã‚‹
         enemyControllers = FindObjectsByType<EnemyController>(FindObjectsSortMode.None);
 
-        // ‹N“®‚É•‚¢ƒpƒlƒ‹‚ÆƒeƒLƒXƒg‚ğ”ñ•\¦‚É‚·‚é
+        // èµ·å‹•æ™‚ã«é»’ã„ãƒ‘ãƒãƒ«ã¨ãƒ†ã‚­ã‚¹ãƒˆã‚’éè¡¨ç¤ºã«ã™ã‚‹
         blackPanel.gameObject.SetActive(false);
         promptText.gameObject.SetActive(false);
     }
 
     private void Update()
     {
-        // ƒvƒŒƒCƒ„[‚ÆƒƒbƒJ[‚Ì‹——£‚ğŒvZ
+        // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¨ãƒ­ãƒƒã‚«ãƒ¼ã®è·é›¢ã‚’è¨ˆç®—
         float distanceToLocker = Vector3.Distance(playerTransform.position, transform.position);
 
         if (isPlayerInside)
         {
-            // [[[ƒƒbƒJ[“à‚É‚¢‚é‚Ìˆ—[[[
+            // ãƒ¼ãƒ¼ãƒ¼ãƒ­ãƒƒã‚«ãƒ¼å†…ã«ã„ã‚‹æ™‚ã®å‡¦ç†ãƒ¼ãƒ¼ãƒ¼
 
-            // EƒL[‚ğ‰Ÿ‚µ‚½‚çƒƒbƒJ[‚©‚ço‚é
+            // Eã‚­ãƒ¼ã‚’æŠ¼ã—ãŸã‚‰ãƒ­ãƒƒã‚«ãƒ¼ã‹ã‚‰å‡ºã‚‹
             if (Input.GetKeyDown(KeyCode.E))
             {
                 ExitLocker();
@@ -53,17 +53,17 @@ public class LockerController : MonoBehaviour
         }
         else
         {
-            // [[[ƒƒbƒJ[ŠO‚É‚¢‚é‚Ìˆ—[[[
+            // ãƒ¼ãƒ¼ãƒ¼ãƒ­ãƒƒã‚«ãƒ¼å¤–ã«ã„ã‚‹æ™‚ã®å‡¦ç†ãƒ¼ãƒ¼ãƒ¼
 
-            // ”ÍˆÍ“à‚©‚ÂğŒ‚ğ–‚½‚·‚ÉUI‚ğ•\¦‚µ‚ÄEƒL[‚ğó‚¯•t‚¯‚é
+            // ç¯„å›²å†…ã‹ã¤æ¡ä»¶ã‚’æº€ãŸã™æ™‚ã«UIã‚’è¡¨ç¤ºã—ã¦Eã‚­ãƒ¼ã‚’å—ã‘ä»˜ã‘ã‚‹
             if (distanceToLocker <= interactRange && CanInteract())
             {
-                // E : ‰B‚ê‚é‚ğ•\¦‚µ‚ÄF‚ğ•‚É•ÏX
+                // E : éš ã‚Œã‚‹ã‚’è¡¨ç¤ºã—ã¦è‰²ã‚’é»’ã«å¤‰æ›´
                 promptText.gameObject.SetActive(true);
-                promptText.text = "E : ‰B‚ê‚é";
+                promptText.text = "E : éš ã‚Œã‚‹";
                 promptText.color = Color.black;
 
-                // EƒL[‚ğ‰Ÿ‚µ‚½‚çƒƒbƒJ[‚É“ü‚é
+                // Eã‚­ãƒ¼ã‚’æŠ¼ã—ãŸã‚‰ãƒ­ãƒƒã‚«ãƒ¼ã«å…¥ã‚‹
                 if (Input.GetKeyDown(KeyCode.E))
                 {
                     EnterLocker();
@@ -71,45 +71,45 @@ public class LockerController : MonoBehaviour
             }
             else
             {
-                // ğŒ‚ğ–‚½‚³‚È‚¢‚ÍUI‚ğ”ñ•\¦
+                // æ¡ä»¶ã‚’æº€ãŸã•ãªã„æ™‚ã¯UIã‚’éè¡¨ç¤º
                 promptText.gameObject.SetActive(false);
             }
         }
     }
 
-    // 3DE2D‚»‚ê‚¼‚ê‚ÌğŒ‚ğ–‚½‚µ‚Ä‚é‚©”»’è‚·‚é
+    // 3Dãƒ»2Dãã‚Œãã‚Œã®æ¡ä»¶ã‚’æº€ãŸã—ã¦ã‚‹ã‹åˆ¤å®šã™ã‚‹
     private bool CanInteract()
     {
         if (playerController.IsTopDown)
         {
-            // [[[2D‚Ì”»’è[[[
-            // ƒvƒŒƒCƒ„[‚©‚çƒƒbƒJ[‚Ö‚Ì•ûŒü‚ğŒvZ
+            // ãƒ¼ãƒ¼ãƒ¼2Dæ™‚ã®åˆ¤å®šãƒ¼ãƒ¼ãƒ¼
+            // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‹ã‚‰ãƒ­ãƒƒã‚«ãƒ¼ã¸ã®æ–¹å‘ã‚’è¨ˆç®—
             Vector3 dirToLocker = (transform.position - playerTransform.position).normalized;
 
-            // ƒvƒŒƒCƒ„[‚ÌŒü‚«‚ÆƒƒbƒJ[‚Ö‚Ì•ûŒü‚ÌŠp“x‚ğŒvZ
+            // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å‘ãã¨ãƒ­ãƒƒã‚«ãƒ¼ã¸ã®æ–¹å‘ã®è§’åº¦ã‚’è¨ˆç®—
             float angle = Vector3.Angle(playerTransform.forward, dirToLocker);
 
-            // facingAngleThresholdˆÈ“à‚ÌŠp“x‚È‚çƒƒbƒJ[‚Ì•û‚ğŒü‚¢‚Ä‚é‚Æ”»’è
+            // facingAngleThresholdä»¥å†…ã®è§’åº¦ãªã‚‰ãƒ­ãƒƒã‚«ãƒ¼ã®æ–¹ã‚’å‘ã„ã¦ã‚‹ã¨åˆ¤å®š
             return angle <= facingAngleThreshold;
         }
         else
         {
-            // [[[3D‚Ì”»’è[[[
-            // ƒJƒƒ‰‚©‚çƒƒbƒJ[‚Ö‚Ì•ûŒü‚ğŒvZ
+            // ãƒ¼ãƒ¼ãƒ¼3Dæ™‚ã®åˆ¤å®šãƒ¼ãƒ¼ãƒ¼
+            // ã‚«ãƒ¡ãƒ©ã‹ã‚‰ãƒ­ãƒƒã‚«ãƒ¼ã¸ã®æ–¹å‘ã‚’è¨ˆç®—
             Vector3 dirToLocker = (transform.position - firstPersonCamera.position).normalized;
 
-            // ƒJƒƒ‰‚ÌŒü‚«‚ÆƒƒbƒJ[‚Ö‚Ì•ûŒü‚ÌŠp“x‚ğŒvZ
+            // ã‚«ãƒ¡ãƒ©ã®å‘ãã¨ãƒ­ãƒƒã‚«ãƒ¼ã¸ã®æ–¹å‘ã®è§’åº¦ã‚’è¨ˆç®—
             float angle = Vector3.Angle(firstPersonCamera.forward, dirToLocker);
 
-            // fieldOfViewAngleˆÈ“à‚ÌŠp“x‚È‚çƒƒbƒJ[‚ª‹ŠE“à‚É‚ ‚é‚Æ”»’è
+            // fieldOfViewAngleä»¥å†…ã®è§’åº¦ãªã‚‰ãƒ­ãƒƒã‚«ãƒ¼ãŒè¦–ç•Œå†…ã«ã‚ã‚‹ã¨åˆ¤å®š
             return angle <= fieldOfViewAngle / 2f;
         }
     }
 
-    // ƒƒbƒJ[‚É“ü‚éˆ—
+    // ãƒ­ãƒƒã‚«ãƒ¼ã«å…¥ã‚‹å‡¦ç†
     private void EnterLocker()
     {
-        // ƒƒbƒJ[‚Ì’†SÀ•W‚ÉƒvƒŒƒCƒ„[‚ğˆÚ“®‚³‚¹‚é
+        // ãƒ­ãƒƒã‚«ãƒ¼ã®ä¸­å¿ƒåº§æ¨™ã«ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’ç§»å‹•ã•ã›ã‚‹
         CharacterController cc = playerTransform.GetComponent<CharacterController>();
         cc.enabled = false;
         playerTransform.position = transform.position;
@@ -117,66 +117,66 @@ public class LockerController : MonoBehaviour
 
         isPlayerInside = true;
 
-        // ‰æ–Ê‚ğu‚É^‚ÁˆÃ‚É‚·‚é
+        // ç”»é¢ã‚’ç¬æ™‚ã«çœŸã£æš—ã«ã™ã‚‹
         blackPanel.gameObject.SetActive(true);
 
-        // E : o‚é‚É•ÏX‚µ‚ÄF‚ğ”’‚É–ß‚·
-        promptText.text = "E : o‚é";
+        // E : å‡ºã‚‹ã«å¤‰æ›´ã—ã¦è‰²ã‚’ç™½ã«æˆ»ã™
+        promptText.text = "E : å‡ºã‚‹";
         promptText.color = Color.white;
 
-        // PlayerController‚É‰B‚ê‚½ó‘Ô‚ğ“`‚¦‚é
+        // PlayerControllerã«éš ã‚ŒãŸçŠ¶æ…‹ã‚’ä¼ãˆã‚‹
         playerController.SetHiding(true);
 
-        // ‘S‚Ä‚Ì“G‚ÉƒvƒŒƒCƒ„[‚ğŒ©¸‚í‚¹‚é
+        // å…¨ã¦ã®æ•µã«ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’è¦‹å¤±ã‚ã›ã‚‹
         foreach (EnemyController enemy in enemyControllers)
         {
             enemy.LosePlayer();
         }
     }
 
-    // ƒƒbƒJ[‚©‚ço‚éˆ—
-    // ƒƒbƒJ[‚©‚ço‚éˆ—
+    // ãƒ­ãƒƒã‚«ãƒ¼ã‹ã‚‰å‡ºã‚‹å‡¦ç†
+    // ãƒ­ãƒƒã‚«ãƒ¼ã‹ã‚‰å‡ºã‚‹å‡¦ç†
     private void ExitLocker()
     {
-        // ƒƒbƒJ[‚Ì³–Ê•ûŒü‚ÉexitDistance•ª‚¾‚¯—£‚ê‚½À•W‚ğŒvZ‚·‚é
+        // ãƒ­ãƒƒã‚«ãƒ¼ã®æ­£é¢æ–¹å‘ã«exitDistanceåˆ†ã ã‘é›¢ã‚ŒãŸåº§æ¨™ã‚’è¨ˆç®—ã™ã‚‹
         Vector3 exitPosition = transform.position + transform.forward * exitDistance;
 
-        // CharacterController‚ğˆê“I‚É–³Œø‰»‚µ‚ÄÀ•W‚ğ•ÏX‚·‚é
+        // CharacterControllerã‚’ä¸€æ™‚çš„ã«ç„¡åŠ¹åŒ–ã—ã¦åº§æ¨™ã‚’å¤‰æ›´ã™ã‚‹
         CharacterController cc = playerTransform.GetComponent<CharacterController>();
         cc.enabled = false;
         playerTransform.position = exitPosition;
         cc.enabled = true;
 
-        // ƒƒbƒJ[‚Ì³–Ê‚Æ‹t•ûŒü‚ÉƒvƒŒƒCƒ„[‚ğŒü‚©‚¹‚é
+        // ãƒ­ãƒƒã‚«ãƒ¼ã®æ­£é¢ã¨é€†æ–¹å‘ã«ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’å‘ã‹ã›ã‚‹
         //playerTransform.rotation = Quaternion.LookRotation(transform.forward);
 
         isPlayerInside = false;
 
-        // ‰æ–Ê‚Ì•‚¢ƒpƒlƒ‹‚ğÁ‚·
+        // ç”»é¢ã®é»’ã„ãƒ‘ãƒãƒ«ã‚’æ¶ˆã™
         blackPanel.gameObject.SetActive(false);
 
-        // UI‚ğ”ñ•\¦
+        // UIã‚’éè¡¨ç¤º
         promptText.gameObject.SetActive(false);
 
-        // PlayerController‚Éo‚½ó‘Ô‚ğ“`‚¦‚é
+        // PlayerControllerã«å‡ºãŸçŠ¶æ…‹ã‚’ä¼ãˆã‚‹
         playerController.SetHiding(false);
     }
 
-    // Sceneƒrƒ…[‚ÅƒCƒ“ƒ^ƒ‰ƒNƒg”ÍˆÍ‚Æ‹–ìŠp‚ğ‰Â‹‰»‚·‚é
+    // Sceneãƒ“ãƒ¥ãƒ¼ã§ã‚¤ãƒ³ã‚¿ãƒ©ã‚¯ãƒˆç¯„å›²ã¨è¦–é‡è§’ã‚’å¯è¦–åŒ–ã™ã‚‹
     private void OnDrawGizmosSelected()
     {
-        // ƒCƒ“ƒ^ƒ‰ƒNƒg”ÍˆÍ‚ğ—ÎF‚Å•\¦
+        // ã‚¤ãƒ³ã‚¿ãƒ©ã‚¯ãƒˆç¯„å›²ã‚’ç·‘è‰²ã§è¡¨ç¤º
         Gizmos.color = Color.green;
         Gizmos.DrawWireSphere(transform.position, interactRange);
 
-        // 3D‚Ì‹–ìŠp‚ğÂF‚Å•\¦
+        // 3Dæ™‚ã®è¦–é‡è§’ã‚’é’è‰²ã§è¡¨ç¤º
         Gizmos.color = Color.blue;
         Vector3 leftBoundary = Quaternion.Euler(0f, -fieldOfViewAngle / 2f, 0f) * transform.forward * interactRange;
         Vector3 rightBoundary = Quaternion.Euler(0f, fieldOfViewAngle / 2f, 0f) * transform.forward * interactRange;
         Gizmos.DrawLine(transform.position, transform.position + leftBoundary);
         Gizmos.DrawLine(transform.position, transform.position + rightBoundary);
 
-        // 2D‚ÌŒü‚«”»’èŠp“x‚ğ‰©F‚Å•\¦
+        // 2Dæ™‚ã®å‘ãåˆ¤å®šè§’åº¦ã‚’é»„è‰²ã§è¡¨ç¤º
         Gizmos.color = Color.yellow;
         Vector3 leftFacing = Quaternion.Euler(0f, -facingAngleThreshold, 0f) * transform.forward * interactRange;
         Vector3 rightFacing = Quaternion.Euler(0f, facingAngleThreshold, 0f) * transform.forward * interactRange;
