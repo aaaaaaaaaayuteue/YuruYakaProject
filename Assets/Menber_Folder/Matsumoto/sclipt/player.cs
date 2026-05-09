@@ -1,14 +1,18 @@
 using UnityEngine;
 
+
 public class NewMonoBehaviourScript : MonoBehaviour
 {
     Rigidbody rb;
     
     [SerializeField] float movespeed = 5;
     
+    
+   
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        
         
     }
 
@@ -25,4 +29,8 @@ public class NewMonoBehaviourScript : MonoBehaviour
         
         
     }
+    
+    
+    
 }
+

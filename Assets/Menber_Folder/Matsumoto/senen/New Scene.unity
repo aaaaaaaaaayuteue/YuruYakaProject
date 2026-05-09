@@ -176,7 +176,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &126935001
+--- !u!1 &465186261
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -184,61 +184,109 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 126935003}
-  - component: {fileID: 126935002}
+  - component: {fileID: 465186265}
+  - component: {fileID: 465186264}
+  - component: {fileID: 465186263}
+  - component: {fileID: 465186262}
   m_Layer: 0
-  m_Name: theme_BGM_oneshot(CriAtomSource)
+  m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &126935002
-MonoBehaviour:
+--- !u!65 &465186262
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 126935001}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d1e631c3b9947b54c823c6853a05529c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: CriMw.CriWare.Runtime::CriWare.CriAtomSource
-  _playOnStart: 1
-  _regionOnStart: {fileID: 0}
-  _listenerOnStart: {fileID: 0}
-  _use3dPositioning: 1
-  _freezeOrientation: 0
-  _loop: 0
-  _volume: 1
-  _pitch: 0
-  _androidUseLowLatencyVoicePool: 0
-  need_to_player_update_all: 1
-  _use3dRandomization: 0
-  _randomPositionListMaxLength: 0
-  randomize3dConfig:
-    followsOriginalSource: 0
-    calculationType: 0
-    calculationParameters:
-    - 0
-    - 0
-    - 0
-  _cueName: Sparkling
-  _cueSheet: SE
---- !u!4 &126935003
+  m_GameObject: {fileID: 465186261}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &465186263
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 465186261}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_MaskInteraction: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &465186264
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 465186261}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &465186265
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 126935001}
+  m_GameObject: {fileID: 465186261}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 3.92, z: 2.97}
+  m_LocalPosition: {x: 0, y: 1.88, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1160910612}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &671665827
@@ -256,6 +304,8 @@ GameObject:
   - component: {fileID: 671665829}
   - component: {fileID: 671665828}
   - component: {fileID: 671665834}
+  - component: {fileID: 671665835}
+  - component: {fileID: 671665836}
   m_Layer: 0
   m_Name: Capsule
   m_TagString: Untagged
@@ -412,6 +462,55 @@ MonoBehaviour:
   m_EditorClassIdentifier: CriMw.CriWare.Runtime::CriWare.CriAtomListener
   regionOnStart: {fileID: 0}
   activateListenerOnEnable: 0
+--- !u!114 &671665835
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 671665827}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1e631c3b9947b54c823c6853a05529c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: CriMw.CriWare.Runtime::CriWare.CriAtomSource
+  _playOnStart: 0
+  _regionOnStart: {fileID: 0}
+  _listenerOnStart: {fileID: 0}
+  _use3dPositioning: 0
+  _freezeOrientation: 0
+  _loop: 0
+  _volume: 1
+  _pitch: 0
+  _androidUseLowLatencyVoicePool: 0
+  need_to_player_update_all: 1
+  _use3dRandomization: 0
+  _randomPositionListMaxLength: 0
+  randomize3dConfig:
+    followsOriginalSource: 0
+    calculationType: 0
+    calculationParameters:
+    - 0
+    - 0
+    - 0
+  _cueName: burner1
+  _cueSheet: SE
+--- !u!114 &671665836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 671665827}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 195034742738001449ca3f88f073b21a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Soude_Burner
+  cueSheetName: SE
+  cueName: burner1
+  startBlockName: ignition
+  stopBlockName: digestion
 --- !u!1 &680115311
 GameObject:
   m_ObjectHideFlags: 0
@@ -568,7 +667,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1e631c3b9947b54c823c6853a05529c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: CriMw.CriWare.Runtime::CriWare.CriAtomSource
-  _playOnStart: 1
+  _playOnStart: 0
   _regionOnStart: {fileID: 0}
   _listenerOnStart: {fileID: 0}
   _use3dPositioning: 1
@@ -598,11 +697,11 @@ Transform:
   m_GameObject: {fileID: 1160910610}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.54, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 465186265}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1504397589
 GameObject:
@@ -861,6 +960,5 @@ SceneRoots:
   - {fileID: 1504397593}
   - {fileID: 2143104706}
   - {fileID: 671665833}
-  - {fileID: 126935003}
   - {fileID: 50310915}
-  - {fileID: 1160910612}
+  - {fileID: 465186265}
