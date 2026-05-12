@@ -20,7 +20,7 @@ Material:
   stringTagMap: {}
   disabledShaderPasses:
   - MOTIONVECTORS
-  m_LockedProperties: _Frequency
+  m_LockedProperties: _CheckBoardColor2 _Frequency
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
@@ -120,7 +120,7 @@ Material:
     - _CheckBoardColor2: {r: 0, g: 0, b: 0, a: 0}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _Frequency: {r: 16, g: 16, b: 0, a: 0}
+    - _Frequency: {r: 4, g: 4, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
