@@ -21,7 +21,17 @@ namespace Hotbar.Procedural
 
         public virtual void Awake()
         {
-            boundSize = GetComponent<MeshRenderer>().bounds.size;
+            var meshRenderer = GetComponent<MeshRenderer>();
+
+            if(meshRenderer != null)
+            {
+                boundSize = meshRenderer.bounds.size;
+            }
+            else
+            {
+                boundSize = Vector3.zero;
+            }
+
         }
 
 
