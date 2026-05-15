@@ -60,7 +60,9 @@ namespace Hotbar.Manager
             CameraManager.Initialize();
             Debug.Log("[GameManager] => Initialize End [CameraManager]");
 
+            Debug.Log("[GameManager] => Initialize [UIManager]");
             UIManager.Initialize();
+            Debug.Log("[GameManager] => Initialize End [UIManager]");
 
             Debug.Log("[GameManager] => Initialize [PostProcessing]");
             PostProcessingManager.Initialize();

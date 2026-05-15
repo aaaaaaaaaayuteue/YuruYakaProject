@@ -17,7 +17,6 @@ namespace Hotbar.Manager
 
         [Header("[Cashing]")]
         private HotbarDictionary<UIType, UIBase> uiDic = new HotbarDictionary<UIType, UIBase>(); 
-
         public static void Initialize(System.Action onEnd = null)
         {
             #region Find UI In Scene

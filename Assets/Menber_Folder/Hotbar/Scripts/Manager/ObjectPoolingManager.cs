@@ -22,7 +22,6 @@ namespace Hotbar.Manager
                 onEnd();
             }
         }
-
         public void Do_RegisterPool(string key, GameObject prefab, int initialSize)
         {
             if (poolDictionary.ContainsKey(key))
@@ -38,7 +37,6 @@ namespace Hotbar.Manager
             }
             poolDictionary[key] = objectPool;
         }
-
         public GameObject Do_SpawnFromPool(string key, Vector3 position = default, Quaternion rotation = default)
         {
             if (!poolDictionary.ContainsKey(key))
@@ -65,7 +63,6 @@ namespace Hotbar.Manager
 
             return objectToSpawn;
         }
-
         public void Do_ReturnToPool(string key, GameObject obj)
         {
             obj.transform.SetParent(poolParent);
