@@ -6,6 +6,7 @@ namespace Hotbar.Base
     {
         private static T _instance;
         private static bool _isShuttingDown = false;
+        public static bool IsInitialize = false;
 
         public static T Instance
         {

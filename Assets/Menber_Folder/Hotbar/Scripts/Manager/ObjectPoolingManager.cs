@@ -11,15 +11,17 @@ namespace Hotbar.Manager
         public HotbarDictionary<string, List<GameObject>> poolDictionary = new();
         public Transform poolParent;
 
-        public static void Do_Initialize(System.Action endEvent)
+        public static void Initialize(System.Action onEnd = null)
         {
             //Light
-            Instance.Do_RegisterPool("Light1", Instance.prefabs["Light1"], 100);
+            Instance.Do_RegisterPool("Light", Instance.prefabs["Light"], 100);
 
 
-            endEvent();
+            if(onEnd != null)
+            {
+                onEnd();
+            }
         }
-
         public void Do_RegisterPool(string key, GameObject prefab, int initialSize)
         {
             if (poolDictionary.ContainsKey(key))
@@ -35,7 +37,6 @@ namespace Hotbar.Manager
             }
             poolDictionary[key] = objectPool;
         }
-
         public GameObject Do_SpawnFromPool(string key, Vector3 position = default, Quaternion rotation = default)
         {
             if (!poolDictionary.ContainsKey(key))
@@ -62,7 +63,6 @@ namespace Hotbar.Manager
 
             return objectToSpawn;
         }
-
         public void Do_ReturnToPool(string key, GameObject obj)
         {
             obj.transform.SetParent(poolParent);
