@@ -181,8 +181,13 @@ public class Soude_Angel : MonoBehaviour
         // toの音を再生
         if (to != null)
         {
-            to.volume = 0f;
-            to.Play();
+            // to（これから鳴らす音）が現在鳴っていない、もしくは止まる寸前（ボリュームが0）なら、
+            // 新しく再生ボタンを押す。
+            if (to.status != CriAtomSource.Status.Playing || toStartVolume <= 0.01f)
+            {
+                to.volume = toStartVolume; // 0からではなく、現在の音量をセット
+                to.Play();
+            }
         }
 
         
