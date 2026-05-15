@@ -11,13 +11,16 @@ namespace Hotbar.Manager
         public HotbarDictionary<string, List<GameObject>> poolDictionary = new();
         public Transform poolParent;
 
-        public static void Initialize(System.Action endEvent)
+        public static void Initialize(System.Action onEnd = null)
         {
             //Light
             Instance.Do_RegisterPool("Light", Instance.prefabs["Light"], 100);
 
 
-            endEvent();
+            if(onEnd != null)
+            {
+                onEnd();
+            }
         }
 
         public void Do_RegisterPool(string key, GameObject prefab, int initialSize)
